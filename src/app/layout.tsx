@@ -1,6 +1,7 @@
 import "@mantine/core/styles.css";
 
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
+import { ModalsProvider } from "@mantine/modals";
 import type { Metadata } from "next";
 import React from "react";
 
@@ -23,8 +24,10 @@ export default function RootLayout({
       </head>
       <body>
         <MantineProvider>
-          {children}
-          {modal}
+          <ModalsProvider>
+            {children}
+            {modal}
+          </ModalsProvider>
         </MantineProvider>
       </body>
     </html>

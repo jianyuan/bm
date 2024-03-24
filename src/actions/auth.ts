@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-import { initPocketBase as getPocketBase } from "@/lib/pocketbase";
+import { getPocketBase } from "@/lib/pocketbase";
 
 import { SignInSchema, signInSchema } from "./schemas";
 

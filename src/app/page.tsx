@@ -1,10 +1,10 @@
 import Link from "next/link";
 
 import { signOut } from "@/actions/auth";
-import { initPocketBase } from "@/lib/pocketbase";
+import { getPocketBase } from "@/lib/pocketbase";
 
 export default async function Home() {
-  const pb = await initPocketBase();
+  const pb = await getPocketBase({ requireAuth: false });
 
   const result = pb.authStore.isValid
     ? await pb.collection("bookmarks").getFullList()

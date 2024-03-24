@@ -1,12 +1,13 @@
 import { unstable_noStore as noStore } from "next/cache";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import PocketBase from "pocketbase";
 
 import { TypedPocketBase } from "@/types/pocketbase";
 
 const COOKIE_NAME = "bm_auth_token";
 
-export async function initPocketBase() {
+export async function getPocketBase({ requireAuth } = { requireAuth: true }) {
   noStore();
 
   const pb = new PocketBase(
@@ -35,6 +36,10 @@ export async function initPocketBase() {
     }
   } catch (_) {
     pb.authStore.clear();
+  }
+
+  if (requireAuth && !pb.authStore.isValid) {
+    redirect("/signin");
   }
 
   return pb;

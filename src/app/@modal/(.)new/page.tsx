@@ -1,3 +1,16 @@
+"use client";
+
+import { Modal } from "@mantine/core";
+import { useRouter } from "next/navigation";
+
+import NewBookmarkForm from "@/app/new/form";
+
 export default function NewModal() {
-  return <div>New: Modal</div>;
+  const router = useRouter();
+
+  return (
+    <Modal opened onClose={() => router.back()} title="New bookmark">
+      <NewBookmarkForm />
+    </Modal>
+  );
 }

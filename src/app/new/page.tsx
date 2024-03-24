@@ -1,3 +1,9 @@
+import NewBookmarkForm from "./form";
+
 export default function NewPage() {
-  return <div>New: Full page</div>;
+  return (
+    <div>
+      <NewBookmarkForm />
+    </div>
+  );
 }
