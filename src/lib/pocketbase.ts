@@ -2,12 +2,16 @@ import { unstable_noStore as noStore } from "next/cache";
 import { cookies } from "next/headers";
 import PocketBase from "pocketbase";
 
+import { TypedPocketBase } from "@/types/pocketbase";
+
 const COOKIE_NAME = "bm_auth_token";
 
 export async function initPocketBase() {
   noStore();
 
-  const pb = new PocketBase(process.env.NEXT_PUBLIC_POCKETBASE_URL);
+  const pb = new PocketBase(
+    process.env.NEXT_PUBLIC_POCKETBASE_URL
+  ) as TypedPocketBase;
 
   const cookieStore = cookies();
   const token = cookieStore.get(COOKIE_NAME)?.value;
