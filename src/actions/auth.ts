@@ -1,20 +1,14 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { z } from "zod";
+import { redirect } from "next/navigation";
 
 import { initPocketBase as getPocketBase } from "@/lib/pocketbase";
 
-const signInSchema = z.object({
-  usernameOrEmail: z.string(),
-  password: z.string(),
-});
+import { SignInSchema, signInSchema } from "./schemas";
 
-export async function signIn(formData: FormData) {
-  const validatedFields = signInSchema.safeParse({
-    usernameOrEmail: formData.get("usernameOrEmail"),
-    password: formData.get("password"),
-  });
+export async function signIn(input: SignInSchema) {
+  const validatedFields = signInSchema.safeParse(input);
 
   if (!validatedFields.success) {
     return {
@@ -39,6 +33,7 @@ export async function signIn(formData: FormData) {
   }
 
   revalidatePath("/", "layout");
+  redirect("/");
 }
 
 export async function signOut() {
@@ -46,4 +41,5 @@ export async function signOut() {
   pb.authStore.clear();
 
   revalidatePath("/", "layout");
+  redirect("/");
 }
