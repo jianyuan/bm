@@ -16,7 +16,7 @@ export async function addBookmark(input: AddBookmarkSchema) {
     };
   }
 
-  const pb = await getPocketBase({ requireAuth: true });
+  const pb = await getPocketBase();
 
   try {
     await pb.collection("bookmarks").create({

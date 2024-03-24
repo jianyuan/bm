@@ -16,7 +16,7 @@ export async function signIn(input: SignInSchema) {
     };
   }
 
-  const pb = await getPocketBase();
+  const pb = await getPocketBase({ requireAuth: false });
   try {
     await pb
       .collection("users")
