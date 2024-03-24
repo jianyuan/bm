@@ -21,6 +21,7 @@ export default async function Home() {
           ? `Logged in as ${pb.authStore.model.username}`
           : `Not logged in`}
       </div>
+      <Link href="/new">New bookmark</Link>
       <pre>{JSON.stringify(result, null, 2)}</pre>
     </main>
   );

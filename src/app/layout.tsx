@@ -2,6 +2,7 @@ import "@mantine/core/styles.css";
 
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import type { Metadata } from "next";
+import React from "react";
 
 export const metadata: Metadata = {
   title: "BM",
@@ -10,8 +11,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  modal,
 }: Readonly<{
   children: React.ReactNode;
+  modal: React.ReactNode;
 }>) {
   return (
     <html lang="en">
@@ -19,7 +22,10 @@ export default function RootLayout({
         <ColorSchemeScript />
       </head>
       <body>
-        <MantineProvider>{children}</MantineProvider>
+        <MantineProvider>
+          {children}
+          {modal}
+        </MantineProvider>
       </body>
     </html>
   );
