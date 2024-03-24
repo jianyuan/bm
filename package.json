@@ -13,7 +13,11 @@
     "@mantine/core": "^7.6.2",
     "@mantine/hooks": "^7.6.2",
     "@mantine/modals": "^7.6.2",
+    "@react-hookz/web": "^24.0.4",
     "mantine-form-zod-resolver": "^1.1.0",
+    "metascraper": "^5.45.3",
+    "metascraper-description": "^5.45.0",
+    "metascraper-title": "^5.45.0",
     "next": "14.1.4",
     "pocketbase": "^0.21.1",
     "react": "^18",
@@ -31,6 +35,7 @@
     "postcss": "^8.4.38",
     "postcss-preset-mantine": "^1.13.0",
     "postcss-simple-vars": "^7.0.1",
+    "raw-loader": "^4.0.2",
     "typescript": "^5"
   }
 }
