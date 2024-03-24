@@ -1,0 +1,37 @@
+import { unstable_noStore as noStore } from "next/cache";
+import { cookies } from "next/headers";
+import PocketBase from "pocketbase";
+
+const COOKIE_NAME = "bm_auth_token";
+
+export async function initPocketBase() {
+  noStore();
+
+  const pb = new PocketBase(process.env.NEXT_PUBLIC_POCKETBASE_URL);
+
+  const cookieStore = cookies();
+  const token = cookieStore.get(COOKIE_NAME)?.value;
+  if (token) {
+    pb.authStore.save(token);
+  }
+
+  pb.authStore.onChange(() => {
+    try {
+      if (pb.authStore.token) {
+        cookieStore.set(COOKIE_NAME, pb.authStore.token);
+      } else {
+        cookieStore.delete(COOKIE_NAME);
+      }
+    } catch (_) {}
+  });
+
+  try {
+    if (pb.authStore.isValid) {
+      await pb.collection("users").authRefresh();
+    }
+  } catch (_) {
+    pb.authStore.clear();
+  }
+
+  return pb;
+}
