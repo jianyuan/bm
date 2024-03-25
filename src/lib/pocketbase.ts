@@ -1,18 +1,18 @@
 import { unstable_noStore as noStore } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import PocketBase from "pocketbase";
+import { TypedPocketBase } from "typed-pocketbase";
 
-import { TypedPocketBase } from "@/types/pocketbase";
+import { Schema } from "@/types/pocketbase";
 
 const COOKIE_NAME = "bm_auth_token";
 
 export async function getPocketBase({ requireAuth } = { requireAuth: true }) {
   noStore();
 
-  const pb = new PocketBase(
+  const pb = new TypedPocketBase<Schema>(
     process.env.NEXT_PUBLIC_POCKETBASE_URL
-  ) as TypedPocketBase;
+  );
 
   const cookieStore = cookies();
   const token = cookieStore.get(COOKIE_NAME)?.value;

@@ -10,5 +10,11 @@ export const addBookmarkSchema = z.object({
   url: z.string().url(),
   title: z.string().optional(),
   description: z.string().optional(),
+  screenshot: z.string().optional(),
 });
 export type AddBookmarkSchema = z.infer<typeof addBookmarkSchema>;
+
+export const captureScreenshotSchema = z.object({
+  url: z.string().url(),
+});
+export type CaptureScreenshotSchema = z.infer<typeof captureScreenshotSchema>;

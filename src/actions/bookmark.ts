@@ -7,11 +7,14 @@ import { getPocketBase } from "@/lib/pocketbase";
 
 import { AddBookmarkSchema, addBookmarkSchema } from "./schemas";
 
-export async function addBookmark(input: AddBookmarkSchema) {
+export async function addBookmark(
+  input: AddBookmarkSchema
+): Promise<{ success: false; errors: Record<string, string[]> } | never> {
   const validatedFields = addBookmarkSchema.safeParse(input);
 
   if (!validatedFields.success) {
     return {
+      success: false,
       errors: validatedFields.error.flatten().fieldErrors,
     };
   }
@@ -19,7 +22,7 @@ export async function addBookmark(input: AddBookmarkSchema) {
   const pb = await getPocketBase();
 
   try {
-    await pb.collection("bookmarks").create({
+    await pb.from("bookmarks").create({
       ...validatedFields.data,
       user: pb.authStore.model?.id,
     });

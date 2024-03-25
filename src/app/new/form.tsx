@@ -1,12 +1,14 @@
 "use client";
 
-import { Button, Stack, Textarea, TextInput } from "@mantine/core";
+import { Box, Button, Image, Stack, Textarea, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useDebouncedCallback } from "@react-hookz/web";
+import { useState } from "react";
 
 import { addBookmark } from "@/actions/bookmark";
 import { getMetadata } from "@/actions/metadata";
 import { AddBookmarkSchema } from "@/actions/schemas";
+import captureScreenshot from "@/actions/screenshot";
 
 export default function NewBookmarkForm() {
   const debouncedGetMetadata = useDebouncedCallback(
@@ -26,10 +28,24 @@ export default function NewBookmarkForm() {
     1000
   );
 
+  const [screenshotUrl, setScreenshotUrl] = useState<string | null>(null);
+  const debouncedCaptureScreenshot = useDebouncedCallback(
+    async (url: string) => {
+      const result = await captureScreenshot({ url });
+      if (result.success) {
+        setScreenshotUrl(result.data.screenshotUrl);
+        form.setFieldValue("screenshot", result.data.id);
+      }
+    },
+    [],
+    1000
+  );
+
   const form = useForm<AddBookmarkSchema>({
     onValuesChange(values, previous) {
       if (values.url !== previous.url) {
         debouncedGetMetadata(values.url);
+        debouncedCaptureScreenshot(values.url);
       }
     },
   });
@@ -47,6 +63,18 @@ export default function NewBookmarkForm() {
         <TextInput label="URL" type="url" {...form.getInputProps("url")} />
         <TextInput label="Title" {...form.getInputProps("title")} />
         <Textarea label="Description" {...form.getInputProps("description")} />
+        {screenshotUrl && (
+          <Box>
+            <Image
+              src={screenshotUrl}
+              radius="md"
+              h={350}
+              w="auto"
+              fit="contain"
+              alt="Screenshot"
+            />
+          </Box>
+        )}
       </Stack>
       <Button type="submit" mt="xl">
         Add
