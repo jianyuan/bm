@@ -2,8 +2,9 @@
 const nextConfig = {
   experimental: {
     typedRoutes: true,
+    optimizePackageImports: ["@mantine/core", "@mantine/hooks"],
   },
-  webpack: (config, options) => {
+  webpack: (config) => {
     config.module.rules.push({
       test: /\.node$/,
       use: ["raw-loader"],
