@@ -4,23 +4,17 @@ import captureWebsite from "capture-website";
 import { eq } from "typed-pocketbase";
 
 import { getPocketBase } from "@/lib/pocketbase";
+import { ActionReturnType } from "@/types/action";
 
 import { CaptureScreenshotSchema, captureScreenshotSchema } from "./schemas";
 
 export default async function captureScreenshot(
   input: CaptureScreenshotSchema
 ): Promise<
-  | {
-      success: true;
-      data: {
-        id: string;
-        screenshotUrl: string;
-      };
-    }
-  | {
-      success: false;
-      errors: Record<string, string[]>;
-    }
+  ActionReturnType<{
+    id: string;
+    screenshotUrl: string;
+  }>
 > {
   const validatedFields = captureScreenshotSchema.safeParse(input);
   if (!validatedFields.success) {
@@ -47,7 +41,7 @@ export default async function captureScreenshot(
 
   // If we don't have a screenshot, capture one
   if (!screenshot) {
-    const buffer = await captureWebsite.buffer(input.url).catch((err) => {
+    const buffer = await captureWebsite.buffer(url).catch((err) => {
       console.error(err);
       return null;
     });
@@ -64,7 +58,7 @@ export default async function captureScreenshot(
     screenshot = await pb.from("screenshots").create({
       user: pb.authStore.model!.id,
       file: new File([buffer], "screenshot.png"),
-      url: input.url,
+      url,
     });
   }
 

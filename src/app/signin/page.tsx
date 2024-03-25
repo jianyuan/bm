@@ -16,7 +16,7 @@ export default function SignInPage() {
     <form
       onSubmit={form.onSubmit(async (values) => {
         const result = await signIn(values);
-        if (result?.errors) {
+        if (!result.success) {
           form.setErrors(result.errors);
         }
       })}

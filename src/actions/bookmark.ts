@@ -4,12 +4,13 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 import { getPocketBase } from "@/lib/pocketbase";
+import { ActionReturnType } from "@/types/action";
 
 import { AddBookmarkSchema, addBookmarkSchema } from "./schemas";
 
 export async function addBookmark(
   input: AddBookmarkSchema
-): Promise<{ success: false; errors: Record<string, string[]> } | never> {
+): Promise<ActionReturnType<{ id: string }>> {
   const validatedFields = addBookmarkSchema.safeParse(input);
 
   if (!validatedFields.success) {
@@ -22,16 +23,19 @@ export async function addBookmark(
   const pb = await getPocketBase();
 
   try {
-    await pb.from("bookmarks").create({
+    const bookmark = await pb.from("bookmarks").create({
       ...validatedFields.data,
       user: pb.authStore.model?.id,
     });
+
+    revalidatePath("/", "layout");
+    return {
+      success: true,
+      data: { id: bookmark.id },
+    };
   } catch (err) {
     console.error(err);
     // TODO: handle error
     throw err;
   }
-
-  revalidatePath("/", "layout");
-  redirect("/");
 }

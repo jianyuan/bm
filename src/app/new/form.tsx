@@ -3,6 +3,7 @@
 import { Box, Button, Image, Stack, Textarea, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useDebouncedCallback } from "@react-hookz/web";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { addBookmark } from "@/actions/bookmark";
@@ -11,11 +12,13 @@ import { AddBookmarkSchema } from "@/actions/schemas";
 import captureScreenshot from "@/actions/screenshot";
 
 export default function NewBookmarkForm() {
+  const router = useRouter();
+
   const debouncedGetMetadata = useDebouncedCallback(
     async (url: string) => {
-      const metadata = await getMetadata(url);
-      if (metadata) {
-        for (const [k, v] of Object.entries(metadata)) {
+      const result = await getMetadata({ url });
+      if (result.success) {
+        for (const [k, v] of Object.entries(result.data)) {
           if (form.isTouched(k)) {
             continue;
           }
@@ -54,7 +57,9 @@ export default function NewBookmarkForm() {
     <form
       onSubmit={form.onSubmit(async (values) => {
         const result = await addBookmark(values);
-        if (result?.errors) {
+        if (result.success) {
+          router.back();
+        } else {
           form.setErrors(result.errors);
         }
       })}

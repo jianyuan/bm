@@ -3,7 +3,11 @@
 import metascraper from "metascraper";
 import metascraperDescription from "metascraper-description";
 import metascraperTitle from "metascraper-title";
-import { z } from "zod";
+
+import { getPocketBase } from "@/lib/pocketbase";
+import { ActionReturnType } from "@/types/action";
+
+import { GetMetadataSchema, getMetadataSchema } from "./schemas";
 
 const metascraperInstance = metascraper([
   metascraperDescription(),
@@ -12,24 +16,45 @@ const metascraperInstance = metascraper([
 
 async function getContent(url: string) {
   const response = await fetch(url, { signal: AbortSignal.timeout(5000) });
-  return await response.text();
-}
 
-export async function getMetadata(url: string) {
-  const validatedUrl = z.string().url().safeParse(url);
-  if (!validatedUrl.success) {
-    return null;
-  }
-
-  const content = await getContent(validatedUrl.data).catch((err) => {
+  try {
+    return await response.text();
+  } catch (err) {
     console.error(err);
     return null;
-  });
+  }
+}
 
+export async function getMetadata(input: GetMetadataSchema): Promise<
+  ActionReturnType<{
+    title?: string;
+    description?: string;
+  }>
+> {
+  const validatedFields = getMetadataSchema.safeParse(input);
+  if (!validatedFields.success) {
+    return {
+      success: false,
+      errors: validatedFields.error.flatten().fieldErrors,
+    };
+  }
+  const { url } = validatedFields.data;
+
+  await getPocketBase();
+
+  const content = await getContent(url);
   if (!content) {
-    return null;
+    return {
+      success: false,
+      errors: {
+        url: ["Failed to fetch content"],
+      },
+    };
   }
 
   const metadata = await metascraperInstance({ html: content, url });
-  return metadata;
+  return {
+    success: true,
+    data: metadata,
+  };
 }
