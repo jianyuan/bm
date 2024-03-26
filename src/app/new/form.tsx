@@ -1,6 +1,14 @@
 "use client";
 
-import { Box, Button, Image, Stack, Textarea, TextInput } from "@mantine/core";
+import {
+  Box,
+  Button,
+  Image,
+  Stack,
+  TagsInput,
+  Textarea,
+  TextInput,
+} from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { useRouter } from "next/navigation";
@@ -45,6 +53,13 @@ export default function NewBookmarkForm() {
   );
 
   const form = useForm<AddBookmarkSchema>({
+    initialValues: {
+      url: "",
+      title: "",
+      description: "",
+      tags: [],
+      screenshot: null,
+    },
     onValuesChange(values, previous) {
       if (values.url !== previous.url) {
         debouncedGetMetadata(values.url);
@@ -68,6 +83,7 @@ export default function NewBookmarkForm() {
         <TextInput label="URL" type="url" {...form.getInputProps("url")} />
         <TextInput label="Title" {...form.getInputProps("title")} />
         <Textarea label="Description" {...form.getInputProps("description")} />
+        <TagsInput label="Tags" {...form.getInputProps("tags")} />
         {screenshotUrl && (
           <Box>
             <Image

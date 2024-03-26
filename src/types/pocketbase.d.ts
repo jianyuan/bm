@@ -161,6 +161,7 @@ export interface UsersCollection {
 	relations: {
 		'bookmarks(user)': BookmarksCollection[];
 		'screenshots(user)': ScreenshotsCollection[];
+		'tags(user)': TagsCollection[];
 	};
 }
 
@@ -173,6 +174,7 @@ export interface BookmarksResponse extends BaseCollectionResponse {
 	title: string;
 	description: string;
 	screenshot: string;
+	tags: Array<string>;
 }
 
 export interface BookmarksCreate extends BaseCollectionCreate {
@@ -181,6 +183,7 @@ export interface BookmarksCreate extends BaseCollectionCreate {
 	title?: string;
 	description?: string;
 	screenshot?: string;
+	tags?: MaybeArray<string>;
 }
 
 export interface BookmarksUpdate extends BaseCollectionUpdate {
@@ -189,6 +192,9 @@ export interface BookmarksUpdate extends BaseCollectionUpdate {
 	title?: string;
 	description?: string;
 	screenshot?: string;
+	tags?: MaybeArray<string>;
+	'tags+'?: MaybeArray<string>;
+	'tags-'?: MaybeArray<string>;
 }
 
 export interface BookmarksCollection {
@@ -201,6 +207,7 @@ export interface BookmarksCollection {
 	relations: {
 		user: UsersCollection;
 		screenshot: ScreenshotsCollection;
+		tags: TagsCollection[];
 	};
 }
 
@@ -238,10 +245,42 @@ export interface ScreenshotsCollection {
 	};
 }
 
+// ===== tags =====
+
+export interface TagsResponse extends BaseCollectionResponse {
+	collectionName: 'tags';
+	user: string;
+	name: string;
+}
+
+export interface TagsCreate extends BaseCollectionCreate {
+	user: string;
+	name?: string;
+}
+
+export interface TagsUpdate extends BaseCollectionUpdate {
+	user?: string;
+	name?: string;
+}
+
+export interface TagsCollection {
+	type: 'base';
+	collectionId: string;
+	collectionName: 'tags';
+	response: TagsResponse;
+	create: TagsCreate;
+	update: TagsUpdate;
+	relations: {
+		'bookmarks(tags)': BookmarksCollection[];
+		user: UsersCollection;
+	};
+}
+
 // ===== Schema =====
 
 export type Schema = {
 	users: UsersCollection;
 	bookmarks: BookmarksCollection;
 	screenshots: ScreenshotsCollection;
+	tags: TagsCollection;
 };

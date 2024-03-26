@@ -1,8 +1,10 @@
 import {
   Anchor,
+  Box,
   Card,
   CardSection,
   Image,
+  Pill,
   SimpleGrid,
   Text,
 } from "@mantine/core";
@@ -24,15 +26,20 @@ export default async function Home() {
         description: true,
         expand: {
           screenshot: true,
+          tags: true,
         },
       },
     })
-  ).map(({ expand, ...rest }) => ({
-    ...rest,
-    screenshot: expand?.screenshot
-      ? pb.files.getUrl(expand.screenshot, expand.screenshot.file, {
-          token: fileToken,
-        })
+  ).map((bookmark) => ({
+    ...bookmark,
+    screenshotUrl: bookmark.expand?.screenshot
+      ? pb.files.getUrl(
+          bookmark.expand.screenshot,
+          bookmark.expand.screenshot.file,
+          {
+            token: fileToken,
+          }
+        )
       : null,
   }));
 
@@ -57,10 +64,10 @@ export default async function Home() {
             radius="md"
             withBorder
           >
-            {bookmark.screenshot && (
+            {bookmark.screenshotUrl && (
               <CardSection>
                 <Image
-                  src={bookmark.screenshot}
+                  src={bookmark.screenshotUrl}
                   h={350}
                   w="auto"
                   fit="contain"
@@ -72,9 +79,18 @@ export default async function Home() {
             <Anchor href={bookmark.url} target="_blank" fw={500}>
               {bookmark.title}
             </Anchor>
+
             <Anchor href={bookmark.url} target="_blank" size="sm" c="dimmed">
               {bookmark.url}
             </Anchor>
+
+            {bookmark.expand?.tags && (
+              <Box>
+                {bookmark.expand.tags.map((tag) => (
+                  <Pill key={tag.id}>{tag.name}</Pill>
+                ))}
+              </Box>
+            )}
 
             <Text size="sm" c="dimmed" mt="lg">
               {bookmark.description}

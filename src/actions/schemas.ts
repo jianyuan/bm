@@ -7,10 +7,11 @@ export const signInSchema = z.object({
 export type SignInSchema = z.infer<typeof signInSchema>;
 
 export const addBookmarkSchema = z.object({
-  url: z.string().url(),
-  title: z.string().optional(),
-  description: z.string().optional(),
-  screenshot: z.string().optional(),
+  url: z.string().trim().url(),
+  title: z.string().trim().nullable(),
+  description: z.string().trim().nullable(),
+  tags: z.array(z.string().trim()),
+  screenshot: z.string().nullable(),
 });
 export type AddBookmarkSchema = z.infer<typeof addBookmarkSchema>;
 
