@@ -41,10 +41,12 @@ export default async function captureScreenshot(
 
   // If we don't have a screenshot, capture one
   if (!screenshot) {
-    const buffer = await captureWebsite.buffer(url).catch((err) => {
-      console.error(err);
-      return null;
-    });
+    const buffer = await captureWebsite
+      .buffer(url, { timeout: 30 })
+      .catch((err) => {
+        console.error(err);
+        return null;
+      });
 
     if (!buffer) {
       return {
