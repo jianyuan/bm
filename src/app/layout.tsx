@@ -3,7 +3,10 @@ import "@mantine/core/styles.css";
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import React from "react";
+
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "BM",
@@ -23,7 +26,7 @@ export default function RootLayout({
         <ColorSchemeScript />
       </head>
       <body>
-        <MantineProvider>
+        <MantineProvider theme={{ fontFamily: inter.style.fontFamily }}>
           <ModalsProvider>
             {children}
             {modal}
