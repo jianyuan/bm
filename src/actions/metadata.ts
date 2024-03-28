@@ -2,6 +2,7 @@
 
 import metascraper from "metascraper";
 import metascraperDescription from "metascraper-description";
+import metascraperLogoFavicon from "metascraper-logo-favicon";
 import metascraperTitle from "metascraper-title";
 
 import { getPocketBase } from "@/lib/pocketbase";
@@ -11,6 +12,7 @@ import { GetMetadataSchema, getMetadataSchema } from "./schemas";
 
 const metascraperInstance = metascraper([
   metascraperDescription(),
+  metascraperLogoFavicon(),
   metascraperTitle(),
 ]);
 
@@ -28,6 +30,7 @@ async function getContent(url: string) {
 export async function getMetadata(input: GetMetadataSchema): Promise<
   ActionReturnType<{
     title?: string;
+    favicon?: string;
     description?: string;
   }>
 > {
@@ -55,6 +58,10 @@ export async function getMetadata(input: GetMetadataSchema): Promise<
   const metadata = await metascraperInstance({ html: content, url });
   return {
     success: true,
-    data: metadata,
+    data: {
+      title: metadata.title,
+      favicon: metadata.logo,
+      description: metadata.description,
+    },
   };
 }

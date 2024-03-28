@@ -50,6 +50,21 @@ export async function addBookmark(
     })
   );
 
+  const favicon = input.favicon
+    ? await fetch(input.favicon, { signal: AbortSignal.timeout(5000) })
+        .then(
+          async (response) =>
+            new File(
+              [await response.blob()],
+              response.url.substring(response.url.lastIndexOf("/") + 1)
+            )
+        )
+        .catch((err) => {
+          console.error("Failed to fetch favicon", err);
+          return undefined;
+        })
+    : undefined;
+
   try {
     const bookmark = await pb.from("bookmarks").create({
       user: pb.authStore.model!.id,
@@ -57,6 +72,7 @@ export async function addBookmark(
       title: input.title || undefined,
       description: input.description || undefined,
       tags: tags.map((record) => record.id),
+      favicon,
       screenshot: input.screenshot || undefined,
     });
 

@@ -5,12 +5,14 @@ import {
   CardSection,
   Image,
   Pill,
+  rem,
   SimpleGrid,
   Text,
 } from "@mantine/core";
 import Link from "next/link";
 
 import { signOut } from "@/actions/auth";
+import { Favicon } from "@/components/Favicon";
 import { getPocketBase } from "@/lib/pocketbase";
 
 export default async function Home() {
@@ -20,10 +22,6 @@ export default async function Home() {
   const bookmarks = (
     await pb.from("bookmarks").getFullList({
       select: {
-        id: true,
-        url: true,
-        title: true,
-        description: true,
         expand: {
           screenshot: true,
           tags: true,
@@ -32,6 +30,9 @@ export default async function Home() {
     })
   ).map((bookmark) => ({
     ...bookmark,
+    faviconUrl: bookmark.favicon
+      ? pb.files.getUrl(bookmark, bookmark.favicon, { token: fileToken })
+      : null,
     screenshotUrl: bookmark.expand?.screenshot
       ? pb.files.getUrl(
           bookmark.expand.screenshot,
@@ -80,8 +81,29 @@ export default async function Home() {
               {bookmark.title}
             </Anchor>
 
-            <Anchor href={bookmark.url} target="_blank" size="sm" c="dimmed">
-              {bookmark.url}
+            <Anchor
+              href={bookmark.url}
+              target="_blank"
+              size="sm"
+              c="dimmed"
+              styles={{
+                root: {
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: rem(4),
+                },
+              }}
+            >
+              <Favicon src={bookmark.faviconUrl} size={16} />
+              <Box
+                style={{
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {bookmark.url}
+              </Box>
             </Anchor>
 
             {bookmark.expand?.tags && (

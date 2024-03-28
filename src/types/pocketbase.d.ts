@@ -173,6 +173,7 @@ export interface BookmarksResponse extends BaseCollectionResponse {
 	url: string;
 	title: string;
 	description: string;
+	favicon: string;
 	screenshot: string;
 	tags: Array<string>;
 }
@@ -182,6 +183,7 @@ export interface BookmarksCreate extends BaseCollectionCreate {
 	url?: string | URL;
 	title?: string;
 	description?: string;
+	favicon?: File | null;
 	screenshot?: string;
 	tags?: MaybeArray<string>;
 }
@@ -191,6 +193,7 @@ export interface BookmarksUpdate extends BaseCollectionUpdate {
 	url?: string | URL;
 	title?: string;
 	description?: string;
+	favicon?: File | null;
 	screenshot?: string;
 	tags?: MaybeArray<string>;
 	'tags+'?: MaybeArray<string>;

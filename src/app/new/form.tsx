@@ -18,6 +18,7 @@ import { addBookmark } from "@/actions/bookmark";
 import { getMetadata } from "@/actions/metadata";
 import { AddBookmarkSchema } from "@/actions/schemas";
 import captureScreenshot from "@/actions/screenshot";
+import { FaviconInput } from "@/components/FaviconInput";
 
 export default function NewBookmarkForm() {
   const router = useRouter();
@@ -58,10 +59,12 @@ export default function NewBookmarkForm() {
       title: "",
       description: "",
       tags: [],
+      favicon: null,
       screenshot: null,
     },
     onValuesChange(values, previous) {
       if (values.url !== previous.url) {
+        form.setFieldValue("favicon", null);
         debouncedGetMetadata(values.url);
         debouncedCaptureScreenshot(values.url);
       }
@@ -80,7 +83,12 @@ export default function NewBookmarkForm() {
       })}
     >
       <Stack>
-        <TextInput label="URL" type="url" {...form.getInputProps("url")} />
+        <TextInput
+          label="URL"
+          type="url"
+          leftSection={<FaviconInput {...form.getInputProps("favicon")} />}
+          {...form.getInputProps("url")}
+        />
         <TextInput label="Title" {...form.getInputProps("title")} />
         <Textarea label="Description" {...form.getInputProps("description")} />
         <TagsInput label="Tags" {...form.getInputProps("tags")} />
