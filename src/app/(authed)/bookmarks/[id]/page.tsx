@@ -17,7 +17,10 @@ export default async function BookmarkPage({
 
   return (
     <Box>
-      <div dangerouslySetInnerHTML={{ __html: data?.content ?? "" }} />
+      <article
+        className="prose"
+        dangerouslySetInnerHTML={{ __html: data?.content ?? "" }}
+      />
       <pre>{JSON.stringify(data, null, 2)}</pre>
     </Box>
   );

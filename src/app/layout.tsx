@@ -1,3 +1,4 @@
+import "./globals.css";
 import "@mantine/core/styles.css";
 
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
@@ -25,7 +26,7 @@ export default function RootLayout({
       <head>
         <ColorSchemeScript />
       </head>
-      <body>
+      <body className={inter.className}>
         <MantineProvider theme={{ fontFamily: inter.style.fontFamily }}>
           <ModalsProvider>
             {children}
