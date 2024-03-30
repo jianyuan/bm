@@ -211,6 +211,7 @@ export interface BookmarksCollection {
 		user: UsersCollection;
 		screenshot: ScreenshotsCollection;
 		tags: TagsCollection[];
+		'contents(bookmark)': ContentsCollection[];
 	};
 }
 
@@ -279,6 +280,39 @@ export interface TagsCollection {
 	};
 }
 
+// ===== contents =====
+
+export interface ContentsResponse extends BaseCollectionResponse {
+	collectionName: 'contents';
+	bookmark: string;
+	content: string;
+	textContent: string;
+}
+
+export interface ContentsCreate extends BaseCollectionCreate {
+	bookmark: string;
+	content?: string;
+	textContent?: string;
+}
+
+export interface ContentsUpdate extends BaseCollectionUpdate {
+	bookmark?: string;
+	content?: string;
+	textContent?: string;
+}
+
+export interface ContentsCollection {
+	type: 'base';
+	collectionId: string;
+	collectionName: 'contents';
+	response: ContentsResponse;
+	create: ContentsCreate;
+	update: ContentsUpdate;
+	relations: {
+		bookmark: BookmarksCollection;
+	};
+}
+
 // ===== Schema =====
 
 export type Schema = {
@@ -286,4 +320,5 @@ export type Schema = {
 	bookmarks: BookmarksCollection;
 	screenshots: ScreenshotsCollection;
 	tags: TagsCollection;
+	contents: ContentsCollection;
 };

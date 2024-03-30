@@ -15,3 +15,11 @@ export const addBookmarkSchema = z.object({
   screenshot: z.string().nullable(),
 });
 export type AddBookmarkSchema = z.infer<typeof addBookmarkSchema>;
+
+export const fetchReadableContentSchema = z.object({
+  refetch: z.boolean().default(false),
+  bookmarkId: z.string(),
+});
+export type FetchReadableContentSchema = z.infer<
+  typeof fetchReadableContentSchema
+>;
