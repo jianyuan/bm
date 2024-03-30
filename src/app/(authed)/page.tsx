@@ -1,20 +1,11 @@
-import {
-  Anchor,
-  Box,
-  Button,
-  Card,
-  CardSection,
-  Image,
-  Pill,
-  rem,
-  SimpleGrid,
-  Text,
-} from "@mantine/core";
 import { Route } from "next";
 import Link from "next/link";
 
 import { signOutAction } from "@/actions/sign-out-action";
 import { Favicon } from "@/components/Favicon";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { getPocketBase } from "@/lib/pocketbase";
 
 export default async function Home() {
@@ -29,6 +20,7 @@ export default async function Home() {
           tags: true,
         },
       },
+      sort: "-created",
     })
   ).map((bookmark) => ({
     ...bookmark,
@@ -58,74 +50,70 @@ export default async function Home() {
           : `Not logged in`}
       </div>
       <Link href="/new">New bookmark</Link>
-      <SimpleGrid cols={3}>
+      <div className="grid grid-cols-3 gap-4">
         {bookmarks.map((bookmark) => (
-          <Card
-            key={bookmark.id}
-            shadow="sm"
-            padding="lg"
-            radius="md"
-            withBorder
-          >
+          <Card key={bookmark.id}>
             {bookmark.screenshotUrl && (
-              <CardSection>
-                <Image
+              <CardContent>
+                <img
                   src={bookmark.screenshotUrl}
-                  h={350}
-                  w="auto"
-                  fit="contain"
                   alt={bookmark.title}
+                  className="h-[350px] w-auto object-contain"
                 />
-              </CardSection>
+              </CardContent>
             )}
 
-            <Anchor href={bookmark.url} target="_blank" fw={500}>
-              {bookmark.title}
-            </Anchor>
+            <CardContent className="space-y-4">
+              <div>
+                <div>
+                  <a
+                    href={bookmark.url}
+                    target="_blank"
+                    className="text-primary underline-offset-4 hover:underline text-sm font-medium"
+                  >
+                    {bookmark.title}
+                  </a>
+                </div>
 
-            <Anchor
-              href={bookmark.url}
-              target="_blank"
-              size="sm"
-              c="dimmed"
-              styles={{
-                root: {
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: rem(4),
-                },
-              }}
-            >
-              <Favicon src={bookmark.faviconUrl} size={16} />
-              <Box
-                style={{
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                {bookmark.url}
-              </Box>
-            </Anchor>
+                <div>
+                  <a
+                    href={bookmark.url}
+                    target="_blank"
+                    className="text-secondary-foreground underline-offset-4 hover:underline space-x-1 inline-flex items-center text-sm font-medium"
+                  >
+                    <Favicon src={bookmark.faviconUrl} size={16} />
+                    <span className="truncate">{bookmark.url}</span>
+                  </a>
+                </div>
 
-            {bookmark.expand?.tags && (
-              <Box>
-                {bookmark.expand.tags.map((tag) => (
-                  <Pill key={tag.id}>{tag.name}</Pill>
-                ))}
-              </Box>
-            )}
+                {bookmark.expand?.tags && (
+                  <div>
+                    {bookmark.expand.tags.map((tag) => (
+                      <Badge key={tag.id} variant="outline">
+                        {tag.name}
+                      </Badge>
+                    ))}
+                  </div>
+                )}
+              </div>
 
-            <Text size="sm" c="dimmed" mt="lg">
-              {bookmark.description}
-            </Text>
+              {bookmark.description && (
+                <div className="text-sm text-secondary-foreground">
+                  {bookmark.description}
+                </div>
+              )}
 
-            <Link href={`bookmarks/${bookmark.id}` as Route} passHref>
-              <Button component="a">Details</Button>
-            </Link>
+              <div>
+                <Button size="sm" asChild>
+                  <Link href={`bookmarks/${bookmark.id}` as Route}>
+                    Details
+                  </Link>
+                </Button>
+              </div>
+            </CardContent>
           </Card>
         ))}
-      </SimpleGrid>
+      </div>
     </main>
   );
 }

@@ -1,16 +1,35 @@
 "use client";
 
-import { Modal } from "@mantine/core";
 import { useRouter } from "next/navigation";
 
 import NewBookmarkForm from "@/app/(authed)/new/form";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 export default function NewModal() {
   const router = useRouter();
 
   return (
-    <Modal opened onClose={() => router.back()} title="New bookmark">
-      <NewBookmarkForm />
-    </Modal>
+    <Dialog
+      open
+      onOpenChange={(open) => {
+        if (!open) {
+          router.back();
+        }
+      }}
+    >
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>New bookmark</DialogTitle>
+        </DialogHeader>
+        <div className="py-4">
+          <NewBookmarkForm />
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 }

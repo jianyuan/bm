@@ -1,25 +1,28 @@
 "use client";
 
-import {
-  Box,
-  Button,
-  Image,
-  Stack,
-  TagsInput,
-  Textarea,
-  TextInput,
-} from "@mantine/core";
-import { useForm } from "@mantine/form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { useRouter } from "next/navigation";
 import { useAction } from "next-safe-action/hooks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 
 import { addBookmarkAction } from "@/actions/add-bookmark-action";
 import { getMetadataAction } from "@/actions/get-metadata-action";
-import { AddBookmarkSchema } from "@/actions/schemas";
+import { AddBookmarkSchema, addBookmarkSchema } from "@/actions/schemas";
 import { captureScreenshotAction } from "@/actions/screenshot-action";
 import { FaviconInput } from "@/components/FaviconInput";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 export default function NewBookmarkForm() {
   const router = useRouter();
@@ -29,29 +32,24 @@ export default function NewBookmarkForm() {
       router.back();
     },
     onError: (error) => {
-      if (error.validationErrors) {
-        form.setErrors(error.validationErrors);
-      }
+      console.log(error);
     },
   });
   const getMetadata = useAction(getMetadataAction, {
     onSuccess: (data) => {
-      for (const [k, v] of Object.entries(data)) {
-        if (form.isTouched(k)) {
-          continue;
-        }
+      if (data.title) {
+        form.setValue("title", data.title);
+      }
 
-        form.setFieldValue(k, v);
+      if (data.description) {
+        form.setValue("description", data.description);
+      }
+
+      if (data.favicon) {
+        form.setValue("favicon", data.favicon);
       }
     },
   });
-  const captureScreenshot = useAction(captureScreenshotAction, {
-    onSuccess: (data) => {
-      setScreenshotUrl(data.screenshotUrl);
-      form.setFieldValue("screenshot", data.id);
-    },
-  });
-
   const debouncedGetMetadata = useDebouncedCallback(
     getMetadata.execute,
     [],
@@ -59,6 +57,12 @@ export default function NewBookmarkForm() {
   );
 
   const [screenshotUrl, setScreenshotUrl] = useState<string | null>(null);
+  const captureScreenshot = useAction(captureScreenshotAction, {
+    onSuccess: (data) => {
+      setScreenshotUrl(data.screenshotUrl);
+      form.setValue("screenshot", data.id);
+    },
+  });
   const debouncedCaptureScreenshot = useDebouncedCallback(
     captureScreenshot.execute,
     [],
@@ -66,7 +70,8 @@ export default function NewBookmarkForm() {
   );
 
   const form = useForm<AddBookmarkSchema>({
-    initialValues: {
+    resolver: zodResolver(addBookmarkSchema),
+    defaultValues: {
       url: "",
       title: "",
       description: "",
@@ -74,43 +79,76 @@ export default function NewBookmarkForm() {
       favicon: null,
       screenshot: null,
     },
-    onValuesChange(values, previous) {
-      if (values.url !== previous.url) {
-        form.setFieldValue("favicon", null);
-        debouncedGetMetadata(values.url);
-        debouncedCaptureScreenshot(values.url);
-      }
-    },
+    disabled: addBookmark.status === "executing",
   });
 
+  useEffect(() => {
+    const subscription = form.watch((value, { name }) => {
+      if (name === "url" && value.url) {
+        form.setValue("favicon", null);
+        debouncedGetMetadata(value.url);
+        debouncedCaptureScreenshot(value.url);
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [debouncedCaptureScreenshot, debouncedGetMetadata, form, getMetadata]);
+
   return (
-    <form onSubmit={form.onSubmit(addBookmark.execute)}>
-      <Stack>
-        <TextInput
-          label="URL"
-          type="url"
-          leftSection={<FaviconInput {...form.getInputProps("favicon")} />}
-          {...form.getInputProps("url")}
-        />
-        <TextInput label="Title" {...form.getInputProps("title")} />
-        <Textarea label="Description" {...form.getInputProps("description")} />
-        <TagsInput label="Tags" {...form.getInputProps("tags")} />
-        {screenshotUrl && (
-          <Box>
-            <Image
-              src={screenshotUrl}
-              radius="md"
-              h={350}
-              w="auto"
-              fit="contain"
-              alt="Screenshot"
-            />
-          </Box>
-        )}
-      </Stack>
-      <Button type="submit" mt="xl">
-        Add
-      </Button>
-    </form>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(addBookmark.execute)}>
+        <div className="space-y-4">
+          <FormField
+            control={form.control}
+            name="url"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>URL</FormLabel>
+                <FormControl className="inline-flex space-y-2 items-center">
+                  <Input type="url" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Title</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Description</FormLabel>
+                <FormControl>
+                  <Textarea {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {/* <TagsInput label="Tags" {...form.getInputProps("tags")} /> */}
+          {screenshotUrl && (
+            <div>
+              <img
+                src={screenshotUrl}
+                className="w-[350px] h-auto object-contain"
+                alt="Screenshot"
+              />
+            </div>
+          )}
+        </div>
+        <Button type="submit">Add</Button>
+      </form>
+    </Form>
   );
 }

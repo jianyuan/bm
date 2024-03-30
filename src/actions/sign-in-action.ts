@@ -17,10 +17,11 @@ export const signInAction = action(signInSchema, async (input) => {
       .collection("users")
       .authWithPassword(input.usernameOrEmail, input.password);
   } catch (err) {
-    if (err instanceof ClientResponseError) {
-      if (err.status === 400) {
-        throw new Error(err.message);
-      }
+    if (err instanceof ClientResponseError && err.status === 400) {
+      return {
+        success: false,
+        error: err.message,
+      };
     }
 
     console.error(err);

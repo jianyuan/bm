@@ -2,7 +2,6 @@
 const nextConfig = {
   experimental: {
     typedRoutes: true,
-    optimizePackageImports: ["@mantine/core", "@mantine/hooks"],
   },
   webpack: (config) => {
     config.module.rules.push({
