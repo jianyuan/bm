@@ -1,6 +1,6 @@
 import { Box } from "@mantine/core";
 
-import { getReadableContent } from "@/actions/content";
+import { getReadableContentAction } from "@/actions/get-readable-content-action";
 import { getPocketBase } from "@/lib/pocketbase";
 
 export default async function BookmarkPage({
@@ -11,12 +11,12 @@ export default async function BookmarkPage({
   const pb = await getPocketBase();
 
   const bookmark = await pb.from("bookmarks").getOne(params.id);
-  const content = await getReadableContent(bookmark.url);
+  const { data } = await getReadableContentAction(bookmark.url);
 
   return (
     <Box>
-      <div dangerouslySetInnerHTML={{ __html: content?.content ?? "" }} />
-      <pre>{JSON.stringify(content, null, 2)}</pre>
+      <div dangerouslySetInnerHTML={{ __html: data?.content ?? "" }} />
+      <pre>{JSON.stringify(data, null, 2)}</pre>
     </Box>
   );
 }

@@ -13,7 +13,7 @@ import {
 import { Route } from "next";
 import Link from "next/link";
 
-import { signOut } from "@/actions/auth";
+import { signOutAction } from "@/actions/sign-out-action";
 import { Favicon } from "@/components/Favicon";
 import { getPocketBase } from "@/lib/pocketbase";
 
@@ -49,7 +49,7 @@ export default async function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <Link href="/signin">Sign in</Link>
-      <form action={signOut}>
+      <form action={signOutAction}>
         <button type="submit">Sign out</button>
       </form>
       <div>

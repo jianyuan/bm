@@ -12,43 +12,55 @@ import {
 import { useForm } from "@mantine/form";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { useRouter } from "next/navigation";
+import { useAction } from "next-safe-action/hooks";
 import { useState } from "react";
 
-import { addBookmark } from "@/actions/bookmark";
-import { getMetadata } from "@/actions/metadata";
+import { addBookmarkAction } from "@/actions/add-bookmark-action";
+import { getMetadataAction } from "@/actions/get-metadata-action";
 import { AddBookmarkSchema } from "@/actions/schemas";
-import captureScreenshot from "@/actions/screenshot";
+import { captureScreenshotAction } from "@/actions/screenshot-action";
 import { FaviconInput } from "@/components/FaviconInput";
 
 export default function NewBookmarkForm() {
   const router = useRouter();
 
-  const debouncedGetMetadata = useDebouncedCallback(
-    async (url: string) => {
-      const result = await getMetadata({ url });
-      if (result.success) {
-        for (const [k, v] of Object.entries(result.data)) {
-          if (form.isTouched(k)) {
-            continue;
-          }
-
-          form.setFieldValue(k, v);
-        }
+  const addBookmark = useAction(addBookmarkAction, {
+    onSuccess: () => {
+      router.back();
+    },
+    onError: (error) => {
+      if (error.validationErrors) {
+        form.setErrors(error.validationErrors);
       }
     },
+  });
+  const getMetadata = useAction(getMetadataAction, {
+    onSuccess: (data) => {
+      for (const [k, v] of Object.entries(data)) {
+        if (form.isTouched(k)) {
+          continue;
+        }
+
+        form.setFieldValue(k, v);
+      }
+    },
+  });
+  const captureScreenshot = useAction(captureScreenshotAction, {
+    onSuccess: (data) => {
+      setScreenshotUrl(data.screenshotUrl);
+      form.setFieldValue("screenshot", data.id);
+    },
+  });
+
+  const debouncedGetMetadata = useDebouncedCallback(
+    getMetadata.execute,
     [],
     1000
   );
 
   const [screenshotUrl, setScreenshotUrl] = useState<string | null>(null);
   const debouncedCaptureScreenshot = useDebouncedCallback(
-    async (url: string) => {
-      const result = await captureScreenshot({ url });
-      if (result.success) {
-        setScreenshotUrl(result.data.screenshotUrl);
-        form.setFieldValue("screenshot", result.data.id);
-      }
-    },
+    captureScreenshot.execute,
     [],
     1000
   );
@@ -72,16 +84,7 @@ export default function NewBookmarkForm() {
   });
 
   return (
-    <form
-      onSubmit={form.onSubmit(async (values) => {
-        const result = await addBookmark(values);
-        if (result.success) {
-          router.back();
-        } else {
-          form.setErrors(result.errors);
-        }
-      })}
-    >
+    <form onSubmit={form.onSubmit(addBookmark.execute)}>
       <Stack>
         <TextInput
           label="URL"
