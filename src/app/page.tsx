@@ -1,6 +1,7 @@
 import {
   Anchor,
   Box,
+  Button,
   Card,
   CardSection,
   Image,
@@ -9,6 +10,7 @@ import {
   SimpleGrid,
   Text,
 } from "@mantine/core";
+import { Route } from "next";
 import Link from "next/link";
 
 import { signOut } from "@/actions/auth";
@@ -117,6 +119,10 @@ export default async function Home() {
             <Text size="sm" c="dimmed" mt="lg">
               {bookmark.description}
             </Text>
+
+            <Link href={`bookmarks/${bookmark.id}` as Route} passHref>
+              <Button component="a">Details</Button>
+            </Link>
           </Card>
         ))}
       </SimpleGrid>
