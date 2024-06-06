@@ -22,7 +22,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "jsdom": "^24.0.0",
-    "lucide-react": "^0.381.0",
+    "lucide-react": "^0.390.0",
     "metascraper": "^5.45.3",
     "metascraper-description": "^5.45.0",
     "metascraper-logo-favicon": "^5.45.2",
