@@ -6,7 +6,7 @@ import metascraperLogoFavicon from "metascraper-logo-favicon";
 import metascraperTitle from "metascraper-title";
 import { z } from "zod";
 
-import { authAction } from "./safe-action";
+import { authActionClient } from "./action-client";
 
 const metascraperInstance = metascraper([
   metascraperDescription(),
@@ -25,16 +25,18 @@ async function getContent(url: string) {
   }
 }
 
-export const getMetadataAction = authAction(z.string().url(), async (url) => {
-  const content = await getContent(url);
-  if (!content) {
-    throw new Error("Failed to fetch content");
-  }
+export const getMetadataAction = authActionClient
+  .schema(z.string().url())
+  .action(async ({ parsedInput: url }) => {
+    const content = await getContent(url);
+    if (!content) {
+      throw new Error("Failed to fetch content");
+    }
 
-  const metadata = await metascraperInstance({ html: content, url });
-  return {
-    title: metadata.title,
-    favicon: metadata.logo,
-    description: metadata.description,
-  };
-});
+    const metadata = await metascraperInstance({ html: content, url });
+    return {
+      title: metadata.title,
+      favicon: metadata.logo,
+      description: metadata.description,
+    };
+  });

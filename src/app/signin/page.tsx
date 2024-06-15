@@ -4,8 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useAction } from "next-safe-action/hooks";
 import { useForm } from "react-hook-form";
 
-import { SignInSchema, signInSchema } from "@/actions/schemas";
-import { signInAction } from "@/actions/sign-in-action";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -23,16 +21,33 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { SignInSchema, signInSchema } from "@/lib/server/actions/schemas";
+import { signInAction } from "@/lib/server/actions/sign-in-action";
 
 export default function SignInPage() {
   const signIn = useAction(signInAction, {
-    onSuccess: (data) => {
-      if (data.error) {
-        form.setError("usernameOrEmail", {
-          message: data.error,
-          type: "server",
+    onError: ({ error: { validationErrors } }) => {
+      if (!validationErrors) {
+        return;
+      }
+
+      const { _errors: rootErrors, ...fieldErrors } = validationErrors;
+
+      if (rootErrors) {
+        rootErrors.forEach((message) => {
+          form.setError("root", { message });
         });
       }
+
+      Object.entries(fieldErrors).forEach(([key, { _errors: messages }]) => {
+        if (!messages) {
+          return;
+        }
+
+        messages.forEach((message) => {
+          form.setError(key as keyof SignInSchema, { message });
+        });
+      });
     },
   });
   const form = useForm<SignInSchema>({

@@ -6,12 +6,12 @@ import { eq } from "typed-pocketbase";
 
 import { ContentsResponse } from "@/types/pocketbase";
 
-import { authAction } from "./safe-action";
+import { authActionClient } from "./action-client";
 import { fetchReadableContentSchema } from "./schemas";
 
-export const fetchReadableContentAction = authAction(
-  fetchReadableContentSchema,
-  async ({ refetch, bookmarkId }, { pb }) => {
+export const fetchReadableContentAction = authActionClient
+  .schema(fetchReadableContentSchema)
+  .action(async ({ parsedInput: { refetch, bookmarkId }, ctx: { pb } }) => {
     const bookmark = await pb.from("bookmarks").getOne(bookmarkId);
 
     let content: ContentsResponse | null = null;
@@ -41,5 +41,4 @@ export const fetchReadableContentAction = authAction(
     }
 
     return content;
-  }
-);
+  });

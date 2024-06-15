@@ -4,11 +4,11 @@ import captureWebsite from "capture-website";
 import { eq } from "typed-pocketbase";
 import { z } from "zod";
 
-import { authAction } from "./safe-action";
+import { authActionClient } from "./action-client";
 
-export const captureScreenshotAction = authAction(
-  z.string().url(),
-  async (url, { pb }) => {
+export const captureScreenshotAction = authActionClient
+  .schema(z.string().url())
+  .action(async ({ parsedInput: url, ctx: { pb } }) => {
     // Check if we already have a screenshot for this URL
     let screenshot = await pb
       .from("screenshots")
@@ -51,5 +51,4 @@ export const captureScreenshotAction = authAction(
       id: screenshot.id,
       screenshotUrl,
     };
-  }
-);
+  });

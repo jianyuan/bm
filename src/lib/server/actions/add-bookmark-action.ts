@@ -4,14 +4,14 @@ import { revalidatePath } from "next/cache";
 import { ClientResponseError } from "pocketbase";
 import { and, eq } from "typed-pocketbase";
 
-import { authAction } from "./safe-action";
+import { authActionClient } from "./action-client";
 import { addBookmarkSchema } from "./schemas";
 
-export const addBookmarkAction = authAction(
-  addBookmarkSchema,
-  async (input, { pb }) => {
+export const addBookmarkAction = authActionClient
+  .schema(addBookmarkSchema)
+  .action(async ({ parsedInput, ctx: { pb } }) => {
     const tags = await Promise.all(
-      input.tags.map(async (tag) => {
+      parsedInput.tags.map(async (tag) => {
         try {
           return await pb
             .from("tags")
@@ -37,8 +37,8 @@ export const addBookmarkAction = authAction(
       })
     );
 
-    const favicon = input.favicon
-      ? await fetch(input.favicon, { signal: AbortSignal.timeout(5000) })
+    const favicon = parsedInput.favicon
+      ? await fetch(parsedInput.favicon, { signal: AbortSignal.timeout(5000) })
           .then(
             async (response) =>
               new File(
@@ -55,12 +55,12 @@ export const addBookmarkAction = authAction(
     try {
       const bookmark = await pb.from("bookmarks").create({
         user: pb.authStore.model!.id,
-        url: input.url,
-        title: input.title || undefined,
-        description: input.description || undefined,
+        url: parsedInput.url,
+        title: parsedInput.title || undefined,
+        description: parsedInput.description || undefined,
         tags: tags.map((record) => record.id),
         favicon,
-        screenshot: input.screenshot || undefined,
+        screenshot: parsedInput.screenshot || undefined,
       });
 
       revalidatePath("/", "layout");
@@ -73,5 +73,4 @@ export const addBookmarkAction = authAction(
       // TODO: handle error
       throw err;
     }
-  }
-);
+  });

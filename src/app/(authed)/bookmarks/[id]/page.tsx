@@ -1,5 +1,5 @@
-import { fetchReadableContentAction } from "@/actions/fetch-readable-content-action";
 import { getPocketBase } from "@/lib/pocketbase";
+import { fetchReadableContentAction } from "@/lib/server/actions/fetch-readable-content-action";
 
 export default async function BookmarkPage({
   params,
@@ -9,7 +9,7 @@ export default async function BookmarkPage({
   const pb = await getPocketBase();
 
   const bookmark = await pb.from("bookmarks").getOne(params.id);
-  const { data } = await fetchReadableContentAction({
+  const result = await fetchReadableContentAction({
     bookmarkId: bookmark.id,
   });
 
@@ -17,9 +17,9 @@ export default async function BookmarkPage({
     <div>
       <article
         className="prose prose-a:underline-offset-4 prose-a:underline"
-        dangerouslySetInnerHTML={{ __html: data?.content ?? "" }}
+        dangerouslySetInnerHTML={{ __html: result?.data?.content ?? "" }}
       />
-      <pre>{JSON.stringify(data, null, 2)}</pre>
+      <pre>{JSON.stringify(result?.data, null, 2)}</pre>
     </div>
   );
 }

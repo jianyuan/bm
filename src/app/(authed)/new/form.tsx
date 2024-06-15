@@ -7,11 +7,6 @@ import { useAction } from "next-safe-action/hooks";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { addBookmarkAction } from "@/actions/add-bookmark-action";
-import { getMetadataAction } from "@/actions/get-metadata-action";
-import { AddBookmarkSchema, addBookmarkSchema } from "@/actions/schemas";
-import { captureScreenshotAction } from "@/actions/screenshot-action";
-import { FaviconInput } from "@/components/FaviconInput";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -23,6 +18,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { addBookmarkAction } from "@/lib/server/actions/add-bookmark-action";
+import { getMetadataAction } from "@/lib/server/actions/get-metadata-action";
+import {
+  AddBookmarkSchema,
+  addBookmarkSchema,
+} from "@/lib/server/actions/schemas";
+import { captureScreenshotAction } from "@/lib/server/actions/screenshot-action";
 
 export default function NewBookmarkForm() {
   const router = useRouter();
@@ -36,16 +38,16 @@ export default function NewBookmarkForm() {
     },
   });
   const getMetadata = useAction(getMetadataAction, {
-    onSuccess: (data) => {
-      if (data.title) {
+    onSuccess: ({ data }) => {
+      if (data?.title) {
         form.setValue("title", data.title);
       }
 
-      if (data.description) {
+      if (data?.description) {
         form.setValue("description", data.description);
       }
 
-      if (data.favicon) {
+      if (data?.favicon) {
         form.setValue("favicon", data.favicon);
       }
     },

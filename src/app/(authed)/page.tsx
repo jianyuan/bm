@@ -1,12 +1,12 @@
 import { Route } from "next";
 import Link from "next/link";
 
-import { signOutAction } from "@/actions/sign-out-action";
 import { Favicon } from "@/components/Favicon";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { getPocketBase } from "@/lib/pocketbase";
+import { signOutAction } from "@/lib/server/actions/sign-out-action";
 
 export default async function Home() {
   const pb = await getPocketBase();
