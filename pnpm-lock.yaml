@@ -101,7 +101,7 @@ importers:
         version: 21.1.7
       '@types/node':
         specifier: ^20
-        version: 20.14.2
+        version: 20.14.3
       '@types/react':
         specifier: ^18
         version: 18.3.3
@@ -672,8 +672,8 @@ packages:
   '@types/keyv@3.1.4':
     resolution: {integrity: sha512-BQ5aZNSCpj7D6K2ksrRCTmKRLEpnPvWDiLPfoGyhZ++8YtiK9d/3DBKPJgry359X/P1PfruyYwvnvwFjuEiEIg==}
 
-  '@types/node@20.14.2':
-    resolution: {integrity: sha512-xyu6WAMVwv6AKFLB+e/7ySZVr/0zLCzOa7rSpq6jNwpqOrUbcACDWC+53d4n2QHOnDou0fbIsg8wZu/sxrnI4Q==}
+  '@types/node@20.14.3':
+    resolution: {integrity: sha512-Nuzqa6WAxeGnve6SXqiPAM9rA++VQs+iLZ1DDd56y0gdvygSZlQvZuvdFPR3yLqkVxPu4WrO02iDEyH1g+wazw==}
 
   '@types/prop-types@15.7.12':
     resolution: {integrity: sha512-5zvhXYtRNRluoE/jAp4GVsSduVUzNWKkOZrCDBWYtE7biZywwdC2AcEzg+cSMLFRfVgeAFqpfNabiPjxFddV1Q==}
@@ -3791,7 +3791,7 @@ snapshots:
     dependencies:
       '@types/http-cache-semantics': 4.0.4
       '@types/keyv': 3.1.4
-      '@types/node': 20.14.2
+      '@types/node': 20.14.3
       '@types/responselike': 1.0.3
 
   '@types/chrome@0.0.268':
@@ -3825,7 +3825,7 @@ snapshots:
 
   '@types/jsdom@21.1.7':
     dependencies:
-      '@types/node': 20.14.2
+      '@types/node': 20.14.3
       '@types/tough-cookie': 4.0.5
       parse5: 7.1.2
 
@@ -3835,9 +3835,9 @@ snapshots:
 
   '@types/keyv@3.1.4':
     dependencies:
-      '@types/node': 20.14.2
+      '@types/node': 20.14.3
 
-  '@types/node@20.14.2':
+  '@types/node@20.14.3':
     dependencies:
       undici-types: 5.26.5
 
@@ -3854,13 +3854,13 @@ snapshots:
 
   '@types/responselike@1.0.3':
     dependencies:
-      '@types/node': 20.14.2
+      '@types/node': 20.14.3
 
   '@types/tough-cookie@4.0.5': {}
 
   '@types/yauzl@2.10.3':
     dependencies:
-      '@types/node': 20.14.2
+      '@types/node': 20.14.3
     optional: true
 
   '@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.4.5)':
@@ -5399,7 +5399,7 @@ snapshots:
 
   jest-worker@27.5.1:
     dependencies:
-      '@types/node': 20.14.2
+      '@types/node': 20.14.3
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
