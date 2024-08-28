@@ -49,7 +49,7 @@ importers:
         version: 0.395.0(react@18.3.1)
       metascraper:
         specifier: ^5.45.3
-        version: 5.45.10(canvas@2.11.2(encoding@0.1.13))
+        version: 5.45.11(canvas@2.11.2(encoding@0.1.13))
       metascraper-description:
         specifier: ^5.45.0
         version: 5.45.10(canvas@2.11.2(encoding@0.1.13))
@@ -2159,8 +2159,8 @@ packages:
     resolution: {integrity: sha512-GGlA7zqkHOe1mAIeRm+V3cHdvveqNO1vX6US8+COorRj9q0tyOMfBFnvmpZp6wE/bX8yGk/r1PVKOdDvAMzBTA==}
     engines: {node: '>= 16'}
 
-  metascraper@5.45.10:
-    resolution: {integrity: sha512-ZcXXJMFRH6pPZ13gfar4lgCJneArWe01CKGRjG2n9zvbSLCXCDpT0g1P/FgabyPwG0Ag7SqBxuzcivGrXVGB4g==}
+  metascraper@5.45.11:
+    resolution: {integrity: sha512-InUmt5dTi7Dph6Jq03vJgw2HXkiu/eim4A/0py/VvLEqhttmOA+t1Xwu1CzqtEbXRUuvuLc8LxWLF8kk6YcHNw==}
     engines: {node: '>= 16'}
 
   micromatch@4.0.7:
@@ -3041,11 +3041,14 @@ packages:
   tldts-core@6.1.26:
     resolution: {integrity: sha512-JNBagViFBIxokJaINH6N4CX0ucHm/keeZi+brVa10zFJ5AorX3nsEzlb6x2bPpr8rsP79tE117I7fGRhbSMZpQ==}
 
+  tldts-core@6.1.27:
+    resolution: {integrity: sha512-uGoj4yLqgFdgF82UpR1wCweJUcd/qMdm97VA3Xo6q7PoEYmlgQxJiVZq1b1cwshmgaLj5q86sj0smoO4QngdKw==}
+
   tldts-experimental@6.1.26:
     resolution: {integrity: sha512-EA87YX+8o0CWtuZlzkRpwD+DwGvB72TiWyss9crevfRY6G7KQqTclR78LnpHOxVcAbwQMdVb7rgyZIQwhY15fw==}
 
-  tldts@6.1.26:
-    resolution: {integrity: sha512-VX7k1GM3fMwOSKssJKDyJMrXE690h26Raddp37DAD3ve0JA8Yk/LscaQAWkm2+Q2ZsWAf29aYE/gB/6zjWtBRQ==}
+  tldts@6.1.27:
+    resolution: {integrity: sha512-FoCm8k5dd2Aw0waigesduQAbOXWVi31XMo0+DcCJc67wolyy0dORRf7CUkIxl49ZgI8N4zelPehy3QanbOLnKQ==}
     hasBin: true
 
   to-regex-range@5.0.1:
@@ -3522,7 +3525,7 @@ snapshots:
       normalize-url: 6.1.0
       re2: 1.21.3
       smartquotes: 2.3.2
-      tldts: 6.1.26
+      tldts: 6.1.27
       url-regex-safe: 4.0.0(re2@1.21.3)
       video-extensions: 1.2.0
     transitivePeerDependencies:
@@ -5641,7 +5644,7 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  metascraper@5.45.10(canvas@2.11.2(encoding@0.1.13)):
+  metascraper@5.45.11(canvas@2.11.2(encoding@0.1.13)):
     dependencies:
       '@metascraper/helpers': 5.45.10(canvas@2.11.2(encoding@0.1.13))
       cheerio: 1.0.0-rc.12
@@ -6590,13 +6593,15 @@ snapshots:
 
   tldts-core@6.1.26: {}
 
+  tldts-core@6.1.27: {}
+
   tldts-experimental@6.1.26:
     dependencies:
       tldts-core: 6.1.26
 
-  tldts@6.1.26:
+  tldts@6.1.27:
     dependencies:
-      tldts-core: 6.1.26
+      tldts-core: 6.1.27
 
   to-regex-range@5.0.1:
     dependencies:
