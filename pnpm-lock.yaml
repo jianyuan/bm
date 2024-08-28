@@ -55,7 +55,7 @@ importers:
         version: 5.45.10(canvas@2.11.2(encoding@0.1.13))
       metascraper-logo-favicon:
         specifier: ^5.45.2
-        version: 5.45.10(canvas@2.11.2(encoding@0.1.13))
+        version: 5.45.11(canvas@2.11.2(encoding@0.1.13))
       metascraper-title:
         specifier: ^5.45.0
         version: 5.45.10(canvas@2.11.2(encoding@0.1.13))
@@ -2151,8 +2151,8 @@ packages:
     resolution: {integrity: sha512-SfIq7mvcU6QvX6RfdIdzvY37UBf1T59wflbEiSlMVMutuAFsx+2JhvlImK5eMDdH1SEL4bmgkmvAiE/oQYXD0g==}
     engines: {node: '>= 16'}
 
-  metascraper-logo-favicon@5.45.10:
-    resolution: {integrity: sha512-+rhSslpxql03bhz2+pAyXXQUJoc3fChgheiCDsE5Pl+tdwrX09CdJMsPmFT2VaIKOgZErhDd08e43o9qt+cTAg==}
+  metascraper-logo-favicon@5.45.11:
+    resolution: {integrity: sha512-TdBBN6Dnw+f584l9JRWIk5hBkpjKkIeZJ6JEsTX5raOSLmwG52KT++UkmmOfJScb3aP3wPKLbmKsw4YisaevGA==}
     engines: {node: '>= 16'}
 
   metascraper-title@5.45.10:
@@ -5620,7 +5620,7 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  metascraper-logo-favicon@5.45.10(canvas@2.11.2(encoding@0.1.13)):
+  metascraper-logo-favicon@5.45.11(canvas@2.11.2(encoding@0.1.13)):
     dependencies:
       '@keyvhq/memoize': 2.1.1
       '@metascraper/helpers': 5.45.10(canvas@2.11.2(encoding@0.1.13))
