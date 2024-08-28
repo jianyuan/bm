@@ -101,7 +101,7 @@ importers:
         version: 21.1.7
       '@types/node':
         specifier: ^20
-        version: 20.14.2
+        version: 20.16.2
       '@types/react':
         specifier: ^18
         version: 18.3.3
@@ -671,9 +671,6 @@ packages:
 
   '@types/keyv@3.1.4':
     resolution: {integrity: sha512-BQ5aZNSCpj7D6K2ksrRCTmKRLEpnPvWDiLPfoGyhZ++8YtiK9d/3DBKPJgry359X/P1PfruyYwvnvwFjuEiEIg==}
-
-  '@types/node@20.14.2':
-    resolution: {integrity: sha512-xyu6WAMVwv6AKFLB+e/7ySZVr/0zLCzOa7rSpq6jNwpqOrUbcACDWC+53d4n2QHOnDou0fbIsg8wZu/sxrnI4Q==}
 
   '@types/node@20.16.2':
     resolution: {integrity: sha512-91s/n4qUPV/wg8eE9KHYW1kouTfDk2FPGjXbBMfRWP/2vg1rCXNQL1OCabwGs0XSdukuK+MwCDXE30QpSeMUhQ==}
@@ -3122,9 +3119,6 @@ packages:
   unbzip2-stream@1.4.3:
     resolution: {integrity: sha512-mlExGW4w71ebDJviH16lQLtZS32VKqsSfk80GCfUlwT/4/hNRFsoscrF/c++9xinkMzECL1uL9DDwXqFWkruPg==}
 
-  undici-types@5.26.5:
-    resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
-
   undici-types@6.19.8:
     resolution: {integrity: sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw==}
 
@@ -3829,7 +3823,7 @@ snapshots:
     dependencies:
       '@types/http-cache-semantics': 4.0.4
       '@types/keyv': 3.1.4
-      '@types/node': 20.14.2
+      '@types/node': 20.16.2
       '@types/responselike': 1.0.3
 
   '@types/chrome@0.0.268':
@@ -3863,7 +3857,7 @@ snapshots:
 
   '@types/jsdom@21.1.7':
     dependencies:
-      '@types/node': 20.14.2
+      '@types/node': 20.16.2
       '@types/tough-cookie': 4.0.5
       parse5: 7.1.2
 
@@ -3873,11 +3867,7 @@ snapshots:
 
   '@types/keyv@3.1.4':
     dependencies:
-      '@types/node': 20.14.2
-
-  '@types/node@20.14.2':
-    dependencies:
-      undici-types: 5.26.5
+      '@types/node': 20.16.2
 
   '@types/node@20.16.2':
     dependencies:
@@ -3896,13 +3886,13 @@ snapshots:
 
   '@types/responselike@1.0.3':
     dependencies:
-      '@types/node': 20.14.2
+      '@types/node': 20.16.2
 
   '@types/tough-cookie@4.0.5': {}
 
   '@types/yauzl@2.10.3':
     dependencies:
-      '@types/node': 20.14.2
+      '@types/node': 20.16.2
     optional: true
 
   '@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.4.5)':
@@ -6691,8 +6681,6 @@ snapshots:
     dependencies:
       buffer: 5.7.1
       through: 2.3.8
-
-  undici-types@5.26.5: {}
 
   undici-types@6.19.8: {}
 
