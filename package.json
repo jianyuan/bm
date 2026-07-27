@@ -27,7 +27,7 @@
     "metascraper-description": "^5.45.0",
     "metascraper-logo-favicon": "^5.45.2",
     "metascraper-title": "^5.45.0",
-    "next": "14.2.4",
+    "next": "15.5.21",
     "next-safe-action": "^6.2.0",
     "pocketbase": "^0.21.1",
     "react": "^18",
